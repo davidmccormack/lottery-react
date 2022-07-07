@@ -13,7 +13,7 @@ class App extends React.Component {
         balance: '',
         address: '',
         value: '',
-        waiting: false,
+        message: '',
     };
   }
 
@@ -30,7 +30,7 @@ class App extends React.Component {
       const accounts = await web3.eth.getAccounts();
       console.log(accounts)
 
-      this.setState({waiting: true})
+      this.setState({message: "Loading transaction..."})
 
       const unit = "ether";
       await lottery.methods.enter().send({
@@ -38,11 +38,11 @@ class App extends React.Component {
           value: web3.utils.toWei(this.state.value, unit),
       })
 
-      this.setState({waiting: false})
+      this.setState({message: "Transaction successfully sent."})
   }
 
   render() {
-      const {manager, players, balance, address, value} = this.state;
+      const {manager, players, balance, address, value, message} = this.state;
       const UNIT = "ether";
       return (
             <div>
@@ -72,8 +72,13 @@ class App extends React.Component {
                         <button onClick={this.onSubmit}>Enter</button>
                     </form>
 
-                    {this.state.waiting && <h1>Validating transaction...</h1>}
+                    <h1>{message}</h1>
 
+
+                    <hr/>
+
+                    <h2>Ready to pick a winner?</h2>
+                    <button onClick={this.onClick}>Pick a winner!</button>
                 </div>
             </div>
 
