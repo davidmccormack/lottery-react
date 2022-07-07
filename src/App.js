@@ -41,6 +41,18 @@ class App extends React.Component {
       this.setState({message: "Transaction successfully sent."})
   }
 
+  onClick = async () => {
+      const accounts = await web3.eth.getAccounts();
+
+      this.setState({message: 'Waiting on transaction success...'});
+
+      await lottery.methods.pickWinner().send({
+          from: accounts[0]
+      })
+
+      this.setState({message: 'A winner has been picked!'});
+  }
+
   render() {
       const {manager, players, balance, address, value, message} = this.state;
       const UNIT = "ether";
